@@ -1,0 +1,239 @@
+cal:::--
+import java.rmi.*;
+
+public interface calInterface extends Remote{
+
+	public int add(int a, int b) throws RemoteException;
+	public int sub(int a, int b) throws RemoteException;
+
+
+}
+calculation::-
+import java.rmi.*;
+import java.rmi.server.*;
+
+
+public class cal extends UnicastRemoteObject implements calInterface{
+
+	public cal() throws RemoteException{}
+
+	public int add(int a, int b){
+		return a+b;
+	}
+
+	public int sub(int a, int b){
+		return a-b;
+	}
+}
+
+
+server::-
+import java.rmi.*;
+import java.rmi.registry.*;
+
+public class calServer{
+
+	public static void main(String [] args){
+
+		try{
+			cal obj1 = new cal();
+			Naming.rebind("calcu",obj1);
+			System.out.println("Server is ready..");
+		}
+
+		catch(Exception e){
+
+			System.out.println("Error" + e);
+		}
+	}
+}
+
+client::-
+import java.rmi.Naming;
+import java.util.Scanner;
+
+public class calClient{
+	public static void main(String []args){
+
+		try{
+			calInterface cal1 = (calInterface) Naming.lookup("calcu");
+
+			Scanner sc = new Scanner(System.in);
+
+			System.out.println("\n	--Calculator--\n\n");
+			System.out.println(" 1:Addition \n 2:Substraction\n\n ");
+			System.out.println("Choose a Operator: ");
+			int val = sc.nextInt();
+
+
+			System.out.print("Enter first number: ");
+			int num1 = sc.nextInt();
+
+			System.out.print("Enter second number: ");
+			int num2 = sc.nextInt();
+
+
+
+			if(val==1){
+				System.out.println("Addition: " + cal1.add(num1, num2));
+			}
+
+			else if(val==2){
+				System.out.println("Substraction: " + cal1.sub(num1, num2));
+			}
+
+		}
+
+		catch(Exception e){
+			System.out.println("");
+		}
+
+	}
+}
+
+
+sum:::-
+interface::
+import java.rmi.*;
+
+public interface sumInterface extends Remote{
+
+	public int sumFunction(int a, int b) throws RemoteException;
+}
+
+
+calculation::
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class sum extends UnicastRemoteObject implements sumInterface{
+
+	public sum() throws RemoteException{}
+
+	public int sumFunction(int a, int b){
+		return a+b;
+	}
+}
+
+server::--
+import java.rmi.*;
+import java.rmi.registry.*;
+
+public class sumServer{
+
+	public static void main(String []args){
+		try{
+			sum obj1 = new sum();
+			Naming.rebind("sum",obj1);
+			System.out.println("Server is ready..");
+
+		}
+
+		catch(Exception e){
+			System.out.println("");
+		}
+	}
+}
+
+client::--
+import java.rmi.Naming;
+import java.util.Scanner;
+
+
+public class sumCLient{
+
+	public static void main(String args[]){
+
+		try{
+			sumInterface sum1 = (sumInterface)Naming.lookup("sum");
+			Scanner sc = new Scanner(System.in);
+
+			System.out.println("Enter a number: ");
+			int num1 = sc.nextInt();
+
+			System.out.println("Enter a number: ");
+			int num2 = sc.nextInt();
+
+			System.out.println("Addition: "+ sum1.sumFunction(num1, num2));
+
+		}
+
+		catch(Exception e){
+
+			System.out.println("Error" + e);
+		}
+	}
+
+}
+
+
+hello::-
+import java.rmi.*;
+
+public interface helloInterface extends Remote{
+
+	public String helloFunction(String a) throws RemoteException;
+
+}
+
+calculation::-
+import java.rmi.*;
+import java.rmi.server.*;
+
+public class hello extends UnicastRemoteObject implements helloInterface{
+
+	public hello() throws RemoteException{}
+
+	public String helloFunction(String a){
+		return a;
+	}
+
+
+
+}
+
+server::-
+import java.rmi.*;
+import java.rmi.registry.*;
+
+public class helloServer{
+
+	public static void main(String []args){
+
+		try{
+			hello obj1 = new hello();
+			Naming.rebind("hello", obj1);
+			System.out.println("Server is ready");
+		}
+
+		catch(Exception e){
+			System.out.println("Error: " + e);
+		}
+
+
+	}
+}
+
+client::-
+import java.rmi.Naming;
+import java.util.Scanner;
+
+public class helloClient{
+
+	public static void main(String args[]){
+
+		try{
+			helloInterface obj1 = (helloInterface) Naming.lookup("hello");
+			System.out.println("" + obj1.helloFunction("hello world"));
+		}
+		catch(Exception e){
+			System.out.println("Error: " + e);
+		}
+
+
+	}
+}
+
+
+
+

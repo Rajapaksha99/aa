@@ -1,0 +1,214 @@
+like: process 1 recevie a number 3 from from process 0
+
+#include <mpi.h>
+#include <stdlib.h>
+#include <stdio.h>
+int main(int argc, char** argv)
+{
+		MPI_Init(NULL,NULL);
+		int rank,size,send,recevie,num1,num2,a;
+		int h,b1,b2,b3,l;
+		MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+		MPI_Comm_rank(MPI_COMM_WORLD,&size);
+	
+		
+
+		if(rank==0)
+		{
+			printf("Enter the 1st number: ");
+			scanf("%d",&num1);
+			printf("Enter the 2nd number: ");
+			scanf("%d",&num2);
+			MPI_Send(&num1,1,MPI_INT,1,0,MPI_COMM_WORLD);
+			MPI_Send(&num2,1,MPI_INT,1,1,MPI_COMM_WORLD);
+		}
+        
+		if(rank==1)
+		{
+			MPI_Recv(&recevie,1,MPI_INT,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+			MPI_Recv(&a,1,MPI_INT,0,1,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+			int k=recevie + a;
+			printf("process 1 recevie a number %d from from process 0\n",k);
+		}
+		MPI_Finalize();
+}
+
+
+mpicc lab14.c -o mpi
+mpirun -np 5 ./mpi
+
+area of given::-
+
+#include <mpi.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+int main(int argc, char** argv)
+{
+	MPI_Init(NULL,NULL) ;
+	
+	int rank,size,send,recevie,num1,num2,a;
+	int h,b1,b2,b3,l;
+	MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+	MPI_Comm_rank(MPI_COMM_WORLD,&size);
+	
+	if(rank==0){
+		printf("Enter the h : ");
+		scanf("%d",&h);
+		printf("Enter the b1 : ");
+		scanf("%d",&b1);
+		printf("Enter the b2 : ");
+		scanf("%d",&b2);
+		printf("Enter the b3 : ");
+		scanf("%d",&b3);
+		MPI_Send(&b1,1,MPI_INT,1,0,MPI_COMM_WORLD);
+		MPI_Send(&h,1,MPI_INT,1,1,MPI_COMM_WORLD);
+		MPI_Send(&h,1,MPI_INT,2,2,MPI_COMM_WORLD);
+		MPI_Send(&b2,1,MPI_INT,2,3,MPI_COMM_WORLD);
+		MPI_Send(&h,1,MPI_INT,3,4,MPI_COMM_WORLD);
+		MPI_Send(&b3,1,MPI_INT,3,5,MPI_COMM_WORLD);
+	}
+	else if(rank==1){
+		MPI_Recv(&recevie,1,MPI_INT,0,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		MPI_Recv(&a,1,MPI_INT,0,1,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+
+		int k=recevie*a/2;
+		MPI_Send(&k,1,MPI_INT,4,0,MPI_COMM_WORLD);
+		
+	}
+	else if (rank==2)
+	{
+		MPI_Recv(&recevie,1,MPI_INT,0,2,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		MPI_Recv(&a,1,MPI_INT,0,3,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		int n=recevie*a/1;
+		MPI_Send(&n,1,MPI_INT,4,1,MPI_COMM_WORLD);
+	}
+	else if (rank==3)
+	{
+		MPI_Recv(&recevie,1,MPI_INT,0,4,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		MPI_Recv(&a,1,MPI_INT,0,5,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		int m=recevie*a/2;
+		MPI_Send(&m,1,MPI_INT,4,3,MPI_COMM_WORLD);
+	
+	}
+	else if(rank==4)
+	{
+		MPI_Recv(&recevie,1,MPI_INT,1,0,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		MPI_Recv(&a,1,MPI_INT,2,1,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		MPI_Recv(&l,1,MPI_INT,3,3,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+		int p=recevie+a+l;
+		printf("\na1 Square value is : %d\n",recevie);
+		printf("\na2 Square valueis : %d\n",a);
+		printf("\na3 Square value is : %d\n",l);
+		printf("\nall Square vlaue is: %d\n",p);
+	}
+		
+	MPI_Finalize();
+}
+
+mpicc lab.c -o mpi
+mpirun -np 4 ./mpi
+
+:::progam to print same text :::
+#include <mpi.h>
+ #include <stdio.h> 
+int main (int argc, char** argv) { 
+ 
+    MPI_Init(NULL, NULL); 
+    int world_size; 
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    int world_rank; 
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank); 
+    char processor_name[MPI_MAX_PROCESSOR_NAME]; 
+    int name_len; 
+    MPI_Get_processor_name(processor_name, &name_len); 
+    printf("My First Message from processor %s, rank %d out of %d processors\n", processor_name, world_rank, world_size); 
+    MPI_Finalize();
+
+ 
+ }
+
+
+
+::::1.	Create a simple MPI program with 04 processes and pass the message
+ “MPI Programming in Distributed and
+ Cloud Computing” to all the processes simultaneously:::
+#include <mpi.h>
+ #include <stdio.h> 
+int main (int argc, char** argv) { 
+ 
+    MPI_Init(NULL, NULL); 
+    int world_size; 
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    int world_rank; 
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank); 
+    printf("MPI Programming in Distributed and Cloud Computing\n"); 
+    MPI_Finalize();
+
+ 
+ }
+
+
+::2.	Modify your MPI program, if the processes size
+ is less than 04 throw message to warn and stop the MPI program:::
+
+#include <mpi.h>
+ #include <stdio.h> 
+int main (int argc, char** argv) { 
+ 
+    MPI_Init(NULL, NULL); 
+    int world_size; 
+    MPI_Comm_size(MPI_COMM_WORLD, &world_size);
+    int world_rank; 
+    MPI_Comm_rank(MPI_COMM_WORLD, &world_rank); 
+    if(world_size<=4){
+        MPI_Abort(MPI_COMM_WORLD,3);
+    }
+    else{
+        printf("MPI Programming in Distributed and Cloud Computing\n"); 
+    }
+    
+    MPI_Finalize();
+
+ 
+ }
+
+:::1)	Using the two fundamentals, MPI Send and MPI Receive, write a simple program
+ that communicates between two processes, where process 0 sends a message saying "Hello world!"
+ and process 1 receives the message. :::
+
+#include<mpi.h>
+#include<stdio.h>
+#include<stdio.h>
+
+int main(int argc, char** argv){
+
+    MPI_Init(NULL, NULL);
+    int rank size;
+    char recevie[12];
+    MPI_Comm_size(MPI_COMM_WORLD,&size);
+    MPI_Comm_rank(MPI_COMM_WORLD,&rank);
+    if(size<2){
+        fprintf(stderr, "world size must be greater than 1 for %s\n",argv[0]);
+        MPI_Abort(MPI_COMM_WORLD,1);
+    }
+
+    if(rank==0){
+        char send[]="hello world";
+        MPI_Send(&send,12,MPI_UNSIGNED_CHAR,1,12,MPI_COMM_WORLD);
+
+    }
+
+    if(rank==1){
+        MPI_Recv(&recive,12,MPI_UNSIGNED_CHAR,0,12,MPI_COMM_WORLD,MPI_STATUS_IGNORE);
+        printf("PROCESS 1 RECIVE A NUMBER %s FROM PROCESS 0 \n",recevie);
+
+    }
+    MPI_Finalize();
+}
+
+
+
+
+
+
